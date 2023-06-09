@@ -1,8 +1,8 @@
 <?php
 
 $databaseHost = 'localhost';
-$databaseName = 'crud_db';
+$databaseName = 'db_kms_native';
 $databaseUsername = 'root';
 $databasePassword = '';
 
-$mysqli = mysqli_connect($databaseHost, $databaseUsername, $databasePassword, $databaseName);
+$conn = mysqli_connect($databaseHost, $databaseUsername, $databasePassword, $databaseName);
