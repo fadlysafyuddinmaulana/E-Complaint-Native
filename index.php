@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in (v2)</title>
+    <title>Complaint</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -28,7 +28,7 @@
             <div class="card-body">
                 <p class="login-box-msg">Silahkan masukkan keluhan anda.</p>
 
-                <form action="function.php" method="post">
+                <form action="Insert_complaint.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>NIM</label>
                         <input type="text" class="form-control" id="exampleInputEmail1" name="nim_check" placeholder="Masukkan NIM anda">
@@ -39,13 +39,13 @@
                     </div>
                     <div class="form-group">
                         <label>Saran Anda</label>
-                        <textarea class="form-control" rows="4" placeholder="Enter ..." style="resize: none;"></textarea>
+                        <textarea class="form-control" rows="4" placeholder="Enter ..." name="saran" style="resize: none;"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputFile">File input</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="exampleInputFile">
+                                <input type="file" class="custom-file-input" name="foto" id="foto">
                                 <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                             </div>
                         </div>
@@ -67,6 +67,13 @@
     <script src="./assets/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="./assets/AdminLTE-3.2.0/dist/js/adminlte.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="./assets/AdminLTE-3.2.0/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+        });
+    </script>
 </body>
 
 </html>
