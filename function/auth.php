@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include 'config/db_connection.php';
 
 error_reporting(0);
 

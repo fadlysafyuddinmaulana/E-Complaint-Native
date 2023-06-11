@@ -134,7 +134,7 @@
                                         </thead>
                                         <tbody>
                                             <?php
-                                            include_once("config.php");
+                                            include_once("config/db_connection.php");
 
                                             $result = mysqli_query($conn, "select * from tb_mhs");
                                             ?>

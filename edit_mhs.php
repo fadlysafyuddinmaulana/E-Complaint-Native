@@ -120,7 +120,7 @@
                                 <!-- form start -->
                                 <form method="post" action="update_mhs.php" enctype="multipart/form-data">
                                     <?php
-                                    include_once("config.php");
+                                    include_once("config/db_connection.php");
                                     $id = $_GET['id_mhs'];
 
                                     $result = mysqli_query($conn, "select * from tb_mhs where id_mhs=$id");

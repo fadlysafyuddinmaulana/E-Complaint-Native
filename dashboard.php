@@ -112,7 +112,7 @@
                             <div class="small-box bg-info">
                                 <div class="inner">
                                     <?php
-                                    include 'config.php';
+                                    include 'config/db_connection.php';
                                     $query = mysqli_query($conn, "select * from tb_keluhan_mhs");
                                     $result = mysqli_num_rows($query);
                                     ?>
@@ -130,7 +130,7 @@
                             <div class="small-box bg-gray">
                                 <div class="inner">
                                     <?php
-                                    include 'config.php';
+                                    include 'config/db_connection.php';
                                     $query = mysqli_query($conn, "select * from tb_mhs");
                                     $result = mysqli_num_rows($query);
                                     ?>

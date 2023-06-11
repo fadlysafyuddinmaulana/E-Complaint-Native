@@ -1,6 +1,6 @@
 
 <?php
-include 'config.php';
+include 'config/db_connection.php';
 $nimcheck = $_POST['nim_check'];
 
 $sql = "select nim from tb_mhs where nim='$nimcheck'";

@@ -1,5 +1,5 @@
 <?php
-include_once("config.php");
+include_once("config/db_connection.php");
 
 if (isset($_POST['update'])) {
     $id             = $_POST['id_mhs'];

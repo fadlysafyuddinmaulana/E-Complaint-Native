@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include 'config/db_connection.php';
 if (isset($_POST['submit'])) {
     $nim                = $_POST['nim'];
     $nama_mahasiswa     = $_POST['nama_mahasiswa'];

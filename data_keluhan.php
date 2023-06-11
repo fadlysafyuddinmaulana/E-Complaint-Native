@@ -132,7 +132,7 @@
                                         </thead>
                                         <tbody>
                                             <?php
-                                            include_once("config.php");
+                                            include_once("config/db_connection.php");
 
                                             $result = mysqli_query($conn, "
                                             select tm.nim,tm.nama_mahasiswa,tkm.keluhan ,tkm.saran,tkm.file  
