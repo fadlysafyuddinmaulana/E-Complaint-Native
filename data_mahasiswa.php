@@ -66,7 +66,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="data_keluhan.php" class="nav-link active">
+                            <a href="data_keluhan.php" class="nav-link">
                                 <i class="nav-icon fas fa-inbox"></i>
                                 <p>
                                     Data Keluhan
@@ -74,7 +74,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="data_mahasiswa.php" class="nav-link">
+                            <a href="data_mahasiswa.php" class="nav-link active">
                                 <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>
                                     Data Mahasiswa
@@ -102,7 +102,9 @@
                             <h1 class="m-0 text-dark">Data Mahasiswa</h1>
                         </div>
                         <div class="ml-auto">
-
+                            <button type="button" class="btn text-white mb-4 btn-effect-ripple btn-primary" data-toggle="modal" data-target="#modal-default">
+                                <i class="fas fa-plus"></i> Tambak Siswa
+                            </button>
                             <a href="add-siswa" class="btn text-white mb-4 btn-effect-ripple btn-primary"><i class="fas fa-plus"></i> Tambak Siswa</a>
                         </div>
                     </div>
@@ -125,20 +127,16 @@
                                                 <th class="text-center" width="1%">No</th>
                                                 <th class="text-center" width="1%">NIM</th>
                                                 <th class="text-center">Nama Mahasiswa</th>
-                                                <th class="text-center">Keluhan</th>
-                                                <th class="text-center">Saran</th>
-                                                <th class="text-center">Aksi</th>
+                                                <th class="text-center" width="15%">Jenis Kelamin</th>
+                                                <th class="text-center" width="15%">Program Studi</th>
+                                                <th class="text-center" width="10%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
                                             include_once("config.php");
 
-                                            $result = mysqli_query($conn, "
-                                            select tm.nim,tm.nama_mahasiswa,tkm.keluhan ,tkm.saran,tkm.file  
-                                            from tb_keluhan_mhs tkm 
-                                            join tb_mhs tm on tm.nim = tkm.nim 
-                                            ");
+                                            $result = mysqli_query($conn, "select * from tb_mhs");
                                             ?>
 
                                             <?php
@@ -147,17 +145,25 @@
 
                                             ?>
                                                 <tr>
-                                                    <td><?php
-                                                        echo
-                                                        $no;
-                                                        $no++; ?>
-                                                    </td>
+                                                    <td><?php echo $no;
+                                                        $no++; ?></td>
                                                     <td><?php echo $user_data['nim']; ?></td>
                                                     <td><?php echo $user_data['nama_mahasiswa']; ?></td>
-                                                    <td><?php echo $user_data['keluhan']; ?></td>
-                                                    <td><?php echo $user_data['saran']; ?></td>
-                                                    <td>
-                                                        <img width="500" height="300" src="file-upload/<?php echo $user_data['file']; ?>" class="rounded float-start" alt="...">
+                                                    <?php
+                                                    $align = "text-center";
+                                                    if ($user_data['jk'] == 'L') { ?>
+                                                        <td class="<?php echo $align ?>">
+                                                            Laki-Laki
+                                                        </td>
+                                                    <?php } else if ($user_data['jk'] == 'P') { ?>
+                                                        <td class="<?php echo $align ?>">
+                                                            Perempuan
+                                                        </td>
+                                                    <?php } ?>
+                                                    <td class="text-center"><?php echo $user_data['prodi']; ?></td>
+                                                    <td class="text-center">
+                                                        <a href="<?php echo "edit_mhs.php?id_mhs=$user_data[id_mhs]"; ?>" class="btn text-light btn-effect-ripple btn-warning"><i class="fa fa-pen"></i></a>
+                                                        <a href="<?php echo "delete_mhs.php?id_mhs=$user_data[id_mhs]" ?>" class="btn text-light btn-effect-ripple btn-danger"><i class="fa fa-trash-alt"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -175,6 +181,69 @@
             </div>
         </div>
 
+
+        <div class="modal fade" id="modal-default">
+            <form method="post" action="insert_mahasiswa.php" enctype="multipart/form-data">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Tambah Mahasiswa</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>NIM</label>
+                                    <input type="text" autocomplete="off" name="nim" id="nim" class="form-control" maxlength="10" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Mahasiswa</label>
+                                    <input type="text" autocomplete="off" name="nama_mahasiswa" id="nama_mahasiswa" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Jenis Kelamin</label>
+                                    <select class="form-control" name="jk" id="jk" style="width: 100%;">
+                                        <option class="d-none"></option>
+                                        <option value="L">Laki Laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prodi</label>
+                                    <select class="form-control select2" name="prodi" id="prodi" style="width: 100%;" required>
+                                        <option class="d-none"></option>
+                                        <option>Teknik Informatika</option>
+                                        <option>Teknik Sipil</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+        <style>
+            .modal {
+                position: absolute;
+                top: 10px;
+                right: 100px;
+                bottom: 0;
+                left: 50px;
+                z-index: 10040;
+                overflow: auto;
+                overflow-y: auto;
+            }
+        </style>
+
         <footer class="main-footer">
             <strong>Copyright &copy;
                 <?php
@@ -183,6 +252,7 @@
                 $time      = date('H:i'); ?>
                 2014 - <?php echo $Date ?>
         </footer>
+
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

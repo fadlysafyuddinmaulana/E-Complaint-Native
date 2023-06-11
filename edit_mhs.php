@@ -66,7 +66,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="data_keluhan.php" class="nav-link active">
+                            <a href="data_keluhan.php" class="nav-link">
                                 <i class="nav-icon fas fa-inbox"></i>
                                 <p>
                                     Data Keluhan
@@ -74,7 +74,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="data_mahasiswa.php" class="nav-link">
+                            <a href="data_mahasiswa.php" class="nav-link active">
                                 <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>
                                     Data Mahasiswa
@@ -99,11 +99,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 mb-3">
-                            <h1 class="m-0 text-dark">Data Mahasiswa</h1>
-                        </div>
-                        <div class="ml-auto">
-
-                            <a href="add-siswa" class="btn text-white mb-4 btn-effect-ripple btn-primary"><i class="fas fa-plus"></i> Tambak Siswa</a>
+                            <h1 class="m-0 text-dark">Edit Mahasiswa</h1>
                         </div>
                     </div>
                     <!-- /.row -->
@@ -116,64 +112,86 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
-                                <!-- /.card-header -->
-                                <div class="card-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center" width="1%">No</th>
-                                                <th class="text-center" width="1%">NIM</th>
-                                                <th class="text-center">Nama Mahasiswa</th>
-                                                <th class="text-center">Keluhan</th>
-                                                <th class="text-center">Saran</th>
-                                                <th class="text-center">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            include_once("config.php");
-
-                                            $result = mysqli_query($conn, "
-                                            select tm.nim,tm.nama_mahasiswa,tkm.keluhan ,tkm.saran,tkm.file  
-                                            from tb_keluhan_mhs tkm 
-                                            join tb_mhs tm on tm.nim = tkm.nim 
-                                            ");
-                                            ?>
-
-                                            <?php
-                                            $no = 1;
-                                            while ($user_data = mysqli_fetch_array($result)) {
-
-                                            ?>
-                                                <tr>
-                                                    <td><?php
-                                                        echo
-                                                        $no;
-                                                        $no++; ?>
-                                                    </td>
-                                                    <td><?php echo $user_data['nim']; ?></td>
-                                                    <td><?php echo $user_data['nama_mahasiswa']; ?></td>
-                                                    <td><?php echo $user_data['keluhan']; ?></td>
-                                                    <td><?php echo $user_data['saran']; ?></td>
-                                                    <td>
-                                                        <img width="500" height="300" src="file-upload/<?php echo $user_data['file']; ?>" class="rounded float-start" alt="...">
-                                                    </td>
-                                                </tr>
-                                            <?php } ?>
-
-                                        </tbody>
-                                    </table>
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Edit Siswa</h3>
                                 </div>
-                                <!-- /.card-body -->
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form method="post" action="update_mhs.php" enctype="multipart/form-data">
+                                    <?php
+                                    include_once("config.php");
+                                    $id = $_GET['id_mhs'];
+
+                                    $result = mysqli_query($conn, "select * from tb_mhs where id_mhs=$id");
+
+                                    while ($user_data = mysqli_fetch_array($result)) {
+                                        $nim            = $user_data['nim'];
+                                        $nama_mahasiswa = $user_data['nama_mahasiswa'];
+                                        $jk             = $user_data['jk'];
+                                        $prodi          = $user_data['prodi'];
+                                    }
+                                    ?>
+
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>NIM</label>
+                                            <input type="hidden" autocomplete="off" name="id_mhs" id="id_mhs" value="<?php echo $_GET['id_mhs']; ?>" class="form-control">
+                                            <input type="text" autocomplete="off" name="nim" id="nim" value="<?php echo "$nim"; ?>" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Nama Mahasiswa</label>
+                                            <input type="text" autocomplete="off" name="nama_mahasiswa" id="nama_mahasiswa" value="<?php echo "$nama_mahasiswa"; ?>" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Jenis Kelamin</label>
+                                            <select class="form-control" name="jk" id="jk" style="width: 100%;">
+                                                <option class="d-none" value="<?php echo "$jk"; ?>">
+                                                    <?php
+                                                    if ($jk == 'L') { ?>
+                                                        Laki-Laki
+                                                    <?php } else if ($jk == 'P') { ?>
+                                                        Perempuan
+                                                    <?php } ?>
+                                                </option>
+                                                <option value="L">Laki Laki</option>
+                                                <option value="P">Perempuan</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Program Studi</label>
+                                            <select class="form-control select2" name="prodi" id="prodi" style="width: 100%;" required>
+                                                <option class="d-none" value="<?php echo "$prodi"; ?>"><?php echo "$prodi"; ?></option>
+                                                <option>Teknik Informatika</option>
+                                                <option>Teknik Sipil</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+
+                                    <div class="card-footer">
+                                        <button type="submit" name="update" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
                             </div>
-                            <!-- /.card -->
                         </div>
                         <!-- /.col -->
                     </div>
                 </div>
             </div>
         </div>
+        <style>
+            .modal {
+                position: absolute;
+                top: 10px;
+                right: 100px;
+                bottom: 0;
+                left: 50px;
+                z-index: 10040;
+                overflow: auto;
+                overflow-y: auto;
+            }
+        </style>
 
         <footer class="main-footer">
             <strong>Copyright &copy;
@@ -183,6 +201,7 @@
                 $time      = date('H:i'); ?>
                 2014 - <?php echo $Date ?>
         </footer>
+
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

@@ -54,7 +54,7 @@
                         <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="dashboard.php" class="nav-link active">
                                 <i class="nav-icon fas fa-solid fa-gauge"></i>
                                 <p>
                                     Dashboard
@@ -62,7 +62,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="data_mahasiswa.php" class="nav-link">
                                 <i class="nav-icon fas fa-inbox"></i>
                                 <p>
                                     Data Keluhan
