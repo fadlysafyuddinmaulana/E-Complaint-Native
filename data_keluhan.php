@@ -47,16 +47,26 @@
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+                    <?php
+
+                    session_start();
+
+                    if (!isset($_SESSION['username'])) {
+                        header("Location: index.php");
+                    }
+
+                    ?>
+
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block"><?php echo $_SESSION['username']; ?></a>
                     </div>
                 </div>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-       with font-awesome or any other icon font library -->
+                        <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <li class="nav-item">
                             <a href="dashboard.php" class="nav-link">
                                 <i class="nav-icon fas fa-solid fa-gauge"></i>
@@ -65,6 +75,7 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-header">Kelola Data</li>
                         <li class="nav-item">
                             <a href="data_keluhan.php" class="nav-link active">
                                 <i class="nav-icon fas fa-inbox"></i>
@@ -73,11 +84,47 @@
                                 </p>
                             </a>
                         </li>
+                        <?php if ($_SESSION['role_id'] == 1) { ?>
+                            <li class="nav-item">
+                                <a href="data_petugas.php" class="nav-link">
+                                    <i class="nav-icon fas fa-solid fa-person-military-pointing"></i>
+                                    <p>
+                                        Data Petugas
+                                    </p>
+                                </a>
+                            </li>
+                        <?php } ?>
+                        <li class="nav-header">Kelola Mahasiswa</li>
                         <li class="nav-item">
                             <a href="data_mahasiswa.php" class="nav-link">
                                 <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>
                                     Data Mahasiswa
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="data_prodi.php" class="nav-link">
+                                <i class="nav-icon fas fa-graduation-cap"></i>
+                                <p>
+                                    Data Prodi
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">Profile</li>
+                        <li class="nav-item">
+                            <a href="conf_user.php" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-gear"></i>
+                                <p>
+                                    Edit Profile
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="conf_password.php" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-lock"></i>
+                                <p>
+                                    Edit Password
                                 </p>
                             </a>
                         </li>
@@ -88,7 +135,7 @@
             <!-- /.sidebar -->
 
             <div class="sidebar-custom">
-                <a href="#" class="btn btn-secondary hide-on-collapse pos-right">Log Out</a>
+                <a href="logout.php" class="btn btn-secondary hide-on-collapse pos-right">Log Out</a>
             </div>
             <!-- /.sidebar-custom -->
         </aside>
@@ -132,7 +179,7 @@
                                         </thead>
                                         <tbody>
                                             <?php
-                                            include_once("config/db_connection.php");
+                                            include_once("db_connection.php");
 
                                             $result = mysqli_query($conn, "
                                             select tm.nim,tm.nama_mahasiswa,tkm.keluhan ,tkm.saran,tkm.file  

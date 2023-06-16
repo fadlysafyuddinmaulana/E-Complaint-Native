@@ -86,7 +86,7 @@
                         </li>
                         <?php if ($_SESSION['role_id'] == 1) { ?>
                             <li class="nav-item">
-                                <a href="data_petugas.php" class="nav-link">
+                                <a href="data_petugas.php" class="nav-link active">
                                     <i class="nav-icon fas fa-solid fa-person-military-pointing"></i>
                                     <p>
                                         Data Petugas
@@ -96,7 +96,7 @@
                         <?php } ?>
                         <li class="nav-header">Kelola Mahasiswa</li>
                         <li class="nav-item">
-                            <a href="data_mahasiswa.php" class="nav-link active">
+                            <a href="data_mahasiswa.php" class="nav-link">
                                 <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>
                                     Data Mahasiswa
@@ -140,6 +140,7 @@
             <!-- /.sidebar-custom -->
         </aside>
 
+
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <div class="content-header">
@@ -150,7 +151,7 @@
                         </div>
                         <div class="ml-auto">
                             <button type="button" class="btn text-white mb-4 btn-effect-ripple btn-primary" data-toggle="modal" data-target="#modal-default">
-                                <i class="fas fa-plus"></i> Tambak Mahasiswa
+                                <i class="fas fa-plus"></i> Tambak Petugas
                             </button>
                         </div>
                     </div>
@@ -171,10 +172,10 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center" width="1%">No</th>
-                                                <th class="text-center" width="1%">NIM</th>
-                                                <th class="text-center">Nama Mahasiswa</th>
-                                                <th class="text-center" width="15%">Jenis Kelamin</th>
-                                                <th class="text-center" width="15%">Program Studi</th>
+                                                <th class="text-center">Nama Petugas</th>
+                                                <th class="text-center" width="15%">Username</th>
+                                                <th class="text-center" width="15%">Password</th>
+                                                <th class="text-center" width="15%">Role</th>
                                                 <th class="text-center" width="10%">Action</th>
                                             </tr>
                                         </thead>
@@ -182,10 +183,7 @@
                                             <?php
                                             include_once("db_connection.php");
 
-                                            $result = mysqli_query($conn, "
-                                            select tm.id_mhs, tm.nim ,tm.nama_mahasiswa ,tm.jk ,tp.prodi 
-                                            from tb_mhs tm 
-                                            join tb_prodi tp on tm.id_prodi = tp.id_prodi  ");
+                                            $result = mysqli_query($conn, "select * from tb_petugas where nama_petugas not in('{$_SESSION['nama_petugas']}')");
                                             ?>
 
                                             <?php
@@ -196,23 +194,23 @@
                                                 <tr>
                                                     <td><?php echo $no;
                                                         $no++; ?></td>
-                                                    <td><?php echo $user_data['nim']; ?></td>
-                                                    <td><?php echo $user_data['nama_mahasiswa']; ?></td>
+                                                    <td><?php echo $user_data['nama_petugas']; ?></td>
+                                                    <td><?php echo $user_data['username']; ?></td>
+                                                    <td class="text-center"><?php echo $user_data['password_dec']; ?></td>
                                                     <?php
                                                     $align = "text-center";
-                                                    if ($user_data['jk'] == 'L') { ?>
+                                                    if ($user_data['role_id'] == 1) { ?>
                                                         <td class="<?php echo $align ?>">
-                                                            Laki-Laki
+                                                            Admin
                                                         </td>
-                                                    <?php } else if ($user_data['jk'] == 'P') { ?>
+                                                    <?php } else if ($user_data['role_id'] == 2) { ?>
                                                         <td class="<?php echo $align ?>">
-                                                            Perempuan
+                                                            Petugas
                                                         </td>
                                                     <?php } ?>
-                                                    <td class="text-center"><?php echo $user_data['prodi']; ?></td>
                                                     <td class="text-center">
-                                                        <a href="<?php echo "edit_mhs.php?id_mhs=$user_data[id_mhs]"; ?>" class="btn text-light btn-effect-ripple btn-warning"><i class="fa fa-pen"></i></a>
-                                                        <a href="<?php echo "delete_mhs.php?id_mhs=$user_data[id_mhs]" ?>" class="btn text-light btn-effect-ripple btn-danger"><i class="fa fa-trash-alt"></i></a>
+                                                        <a href="<?php echo "edit_petugas.php?id_admin=$user_data[id_admin]"; ?>" class="btn text-light btn-effect-ripple btn-warning"><i class="fa fa-pen"></i></a>
+                                                        <a href="<?php echo "delete_petugas.php?id_admin=$user_data[id_admin]" ?>" class="btn text-light btn-effect-ripple btn-danger"><i class="fa fa-trash-alt"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -232,11 +230,11 @@
 
 
         <div class="modal fade" id="modal-default">
-            <form method="post" action="insert_mahasiswa.php" enctype="multipart/form-data">
+            <form method="post" action="insert_petugas.php" enctype="multipart/form-data">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Tambah Mahasiswa</h4>
+                            <h4 class="modal-title">Tambah Petugas</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -244,35 +242,23 @@
                         <div class="modal-body">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label>NIM</label>
-                                    <input type="text" autocomplete="off" name="nim" id="nim" class="form-control" maxlength="10" required>
+                                    <label>Nama Petugas</label>
+                                    <input type="text" autocomplete="off" name="nama_petugas" id="nama_petugas" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Nama Mahasiswa</label>
-                                    <input type="text" autocomplete="off" name="nama_mahasiswa" id="nama_mahasiswa" class="form-control" required>
+                                    <label>Username</label>
+                                    <input type="text" autocomplete="off" name="username" id="username" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Jenis Kelamin</label>
-                                    <select class="form-control" name="jk" id="jk" style="width: 100%;">
+                                    <label>Password</label>
+                                    <input type="text" autocomplete="off" name="password" id="password" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <select class="form-control" name="role" id="role" style="width: 100%;">
                                         <option class="d-none"></option>
-                                        <option value="L">Laki Laki</option>
-                                        <option value="P">Perempuan</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Prodi</label>
-                                    <select class="form-control select2" name="prodi" id="prodi" style="width: 100%;" required>
-                                        <option class="d-none"></option>
-                                        <?php
-                                        include_once("db_connection.php");
-
-                                        $result = mysqli_query($conn, "select * from tb_prodi");
-                                        ?>
-                                        <?php while ($user_data = mysqli_fetch_array($result)) {
-
-                                        ?>
-                                            <option value="<?php echo $user_data['id_prodi'] ?>"><?php echo $user_data['prodi'] ?></option>
-                                        <?php } ?>
+                                        <option value="1">Admin</option>
+                                        <option value="2" selected>Petugas</option>
                                     </select>
                                 </div>
                             </div>

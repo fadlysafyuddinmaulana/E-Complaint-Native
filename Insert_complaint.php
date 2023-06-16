@@ -1,6 +1,6 @@
 
 <?php
-include 'config/db_connection.php';
+include 'db_connection.php';
 $nimcheck = $_POST['nim_check'];
 
 $sql = "select nim from tb_mhs where nim='$nimcheck'";
@@ -28,7 +28,9 @@ if ($result->num_rows > 0) {
                 header("Location: index.php");
             }
         } else {
-            header("Location: message_error.php", $flash_error);
+            $new_file   = 'Bukti Keluhan Oleh ' . $nim . '-' . $Date . '-' . $Time . '-' . $bk_file;
+            $result_record = mysqli_query($conn, "insert into tb_keluhan_mhs(nim,keluhan,saran,file) values('$nim','$keluhan','$saran','$new_file')");
+            header("Location: index.php");
         }
     }
 } else {

@@ -9,7 +9,6 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <!-- <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css"> -->
     <link rel="stylesheet" href="./assets/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css">
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="./assets/AdminLTE-3.2.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
@@ -19,8 +18,8 @@
     <link rel="stylesheet" href="./css-custom/cp.css">
 </head>
 
-<body class="hold-transition login-page">
-    <div class="register-box" style="width: 400px;">
+<body  class="hold-transition login-page">
+    <div class="register-box" style="width: 400px; margin: 45px;">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <div class="h1"><b>Complaint</b> Box</div>
@@ -28,21 +27,21 @@
             <div class="card-body">
                 <p class="login-box-msg">Silahkan masukkan keluhan anda.</p>
 
-                <form action="Insert_complaint.php" method="post" enctype="multipart/form-data">
+                <form id="complaint-form" action="Insert_complaint.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label>NIM</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" name="nim_check" placeholder="Masukkan NIM anda">
+                        <!-- <label>NIM</label> -->
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="nim_check" maxlength="10" placeholder="Masukkan NIM anda">
                     </div>
                     <div class="form-group">
-                        <label>Keluhan Anda</label>
-                        <textarea class="form-control" rows="4" placeholder="Enter ..." name="keluhan" style="resize: none;"></textarea>
+                        <!-- <label>Keluhan Anda</label> -->
+                        <textarea class="form-control" rows="4" placeholder="Masukkan Keluhan Anda" name="keluhan" style="resize: none;"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Saran Anda</label>
-                        <textarea class="form-control" rows="4" placeholder="Enter ..." name="saran" style="resize: none;"></textarea>
+                        <!-- <label style="font-size: 1px;">Saran Anda</label> -->
+                        <textarea class="form-control" rows="4" placeholder="Masukkan Saran Anda" name="saran" style="resize: none;"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputFile">File input</label>
+                        <!-- <label for="exampleInputFile">File input</label> -->
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" name="foto" id="foto">
@@ -69,9 +68,55 @@
     <script src="./assets/AdminLTE-3.2.0/dist/js/adminlte.min.js"></script>
     <!-- bs-custom-file-input -->
     <script src="./assets/AdminLTE-3.2.0/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- jquery-validation -->
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/additional-methods.min.js"></script>
+    <!-- custom-script -->
     <script>
         $(function() {
             bsCustomFileInput.init();
+        });
+    </script>
+
+    <script>
+        $(function() {
+            $('#complaint-form').validate({
+                rules: {
+                    'nim_check': {
+                        required: true,
+                        number: true,
+                    },
+                    'keluhan': {
+                        required: true,
+                    },
+                    'saran': {
+                        required: true,
+                    },
+                },
+                messages: {
+                    'nim_check': {
+                        required: "Tolong masukkan nim anda!",
+                        number: "Ketikkan dengan angka bukan huruf!"
+                    },
+                    'keluhan': {
+                        required: "Tolong masukkan keluhan anda!"
+                    },
+                    'saran': {
+                        required: "Tolong masukkan saran anda!"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
         });
     </script>
 </body>

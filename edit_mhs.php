@@ -47,16 +47,26 @@
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+                    <?php
+
+                    session_start();
+
+                    if (!isset($_SESSION['username'])) {
+                        header("Location: index.php");
+                    }
+
+                    ?>
+
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block"><?php echo $_SESSION['username']; ?></a>
                     </div>
                 </div>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-       with font-awesome or any other icon font library -->
+                        <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <li class="nav-item">
                             <a href="dashboard.php" class="nav-link">
                                 <i class="nav-icon fas fa-solid fa-gauge"></i>
@@ -65,6 +75,7 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-header">Kelola Data</li>
                         <li class="nav-item">
                             <a href="data_keluhan.php" class="nav-link">
                                 <i class="nav-icon fas fa-inbox"></i>
@@ -73,11 +84,39 @@
                                 </p>
                             </a>
                         </li>
+                        <?php if ($_SESSION['role_id'] == 1) { ?>
+                            <li class="nav-item">
+                                <a href="data_petugas.php" class="nav-link">
+                                    <i class="nav-icon fas fa-solid fa-person-military-pointing"></i>
+                                    <p>
+                                        Data Petugas
+                                    </p>
+                                </a>
+                            </li>
+                        <?php } ?>
+                        <li class="nav-header">Kelola Mahasiswa</li>
                         <li class="nav-item">
-                            <a href="data_mahasiswa.php" class="nav-link active">
+                            <a href="data_mahasiswa.php" class="nav-link">
                                 <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>
                                     Data Mahasiswa
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="data_prodi.php" class="nav-link">
+                                <i class="nav-icon fas fa-graduation-cap"></i>
+                                <p>
+                                    Data Prodi
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">Profile</li>
+                        <li class="nav-item">
+                            <a href="conf_user.php" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-gear"></i>
+                                <p>
+                                    Pengaturan User
                                 </p>
                             </a>
                         </li>
@@ -88,7 +127,7 @@
             <!-- /.sidebar -->
 
             <div class="sidebar-custom">
-                <a href="#" class="btn btn-secondary hide-on-collapse pos-right">Log Out</a>
+                <a href="logout.php" class="btn btn-secondary hide-on-collapse pos-right">Log Out</a>
             </div>
             <!-- /.sidebar-custom -->
         </aside>
@@ -120,15 +159,19 @@
                                 <!-- form start -->
                                 <form method="post" action="update_mhs.php" enctype="multipart/form-data">
                                     <?php
-                                    include_once("config/db_connection.php");
+                                    include_once("db_connection.php");
                                     $id = $_GET['id_mhs'];
 
-                                    $result = mysqli_query($conn, "select * from tb_mhs where id_mhs=$id");
+                                    $result = mysqli_query($conn, "
+                                    select tm.id_mhs, tm.nim ,tm.nama_mahasiswa ,tm.jk ,tp.prodi ,tp.id_prodi
+                                    from tb_mhs tm 
+                                    join tb_prodi tp on tm.id_prodi = tp.id_prodi  ");
 
                                     while ($user_data = mysqli_fetch_array($result)) {
-                                        $nim            = $user_data['nim'];
+                                        $prodi            = $user_data['prodi'];
                                         $nama_mahasiswa = $user_data['nama_mahasiswa'];
                                         $jk             = $user_data['jk'];
+                                        $id_prodi       = $user_data['id_prodi'];
                                         $prodi          = $user_data['prodi'];
                                     }
                                     ?>
@@ -137,7 +180,7 @@
                                         <div class="form-group">
                                             <label>NIM</label>
                                             <input type="hidden" autocomplete="off" name="id_mhs" id="id_mhs" value="<?php echo $_GET['id_mhs']; ?>" class="form-control">
-                                            <input type="text" autocomplete="off" name="nim" id="nim" value="<?php echo "$nim"; ?>" class="form-control">
+                                            <input type="text" autocomplete="off" name="nim" id="nim" value="<?php echo "$prodi"; ?>" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>Nama Mahasiswa</label>
@@ -146,7 +189,7 @@
                                         <div class="form-group">
                                             <label>Jenis Kelamin</label>
                                             <select class="form-control" name="jk" id="jk" style="width: 100%;">
-                                                <option class="d-none" value="<?php echo "$jk"; ?>">
+                                                <option class="d-none" value="<?php echo $jk; ?>">
                                                     <?php
                                                     if ($jk == 'L') { ?>
                                                         Laki-Laki
@@ -156,14 +199,6 @@
                                                 </option>
                                                 <option value="L">Laki Laki</option>
                                                 <option value="P">Perempuan</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Program Studi</label>
-                                            <select class="form-control select2" name="prodi" id="prodi" style="width: 100%;" required>
-                                                <option class="d-none" value="<?php echo "$prodi"; ?>"><?php echo "$prodi"; ?></option>
-                                                <option>Teknik Informatika</option>
-                                                <option>Teknik Sipil</option>
                                             </select>
                                         </div>
                                     </div>

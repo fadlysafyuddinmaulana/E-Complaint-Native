@@ -1,10 +1,11 @@
+e
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Fixed Sidebar</title>
+    <title>Dashboard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -12,6 +13,10 @@
     <link rel="stylesheet" href="./assets/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="./assets/AdminLTE-3.2.0/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="./assets/AdminLTE-3.2.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="./assets/AdminLTE-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="./assets/AdminLTE-3.2.0/dist/css/adminlte.min.css">
 </head>
@@ -64,7 +69,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="dashboard.php" class="nav-link active">
+                            <a href="dashboard.php" class="nav-link">
                                 <i class="nav-icon fas fa-solid fa-gauge"></i>
                                 <p>
                                     Dashboard
@@ -112,15 +117,7 @@
                             <a href="conf_user.php" class="nav-link">
                                 <i class="nav-icon fas fa-solid fa-gear"></i>
                                 <p>
-                                    Edit Profile
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="conf_password.php" class="nav-link">
-                                <i class="nav-icon fas fa-solid fa-lock"></i>
-                                <p>
-                                    Edit Password
+                                    Pengaturan User
                                 </p>
                             </a>
                         </li>
@@ -138,83 +135,73 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Dasboard</h1>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
-
-            <!-- Main content -->
-            <div class="content">
-                <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-3 col-6">
-                            <!-- small box -->
-                            <div class="small-box bg-info">
-                                <div class="inner">
-                                    <?php
-                                    include 'db_connection.php';
-                                    $query = mysqli_query($conn, "select * from tb_keluhan_mhs");
-                                    $result = mysqli_num_rows($query);
-                                    ?>
-                                    <h3><?php echo $result; ?></h3>
-
-                                    <p>Complaint</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-solid fa-inbox"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <!-- small box -->
-                            <div class="small-box bg-gray">
-                                <div class="inner">
-                                    <?php
-                                    include 'db_connection.php';
-                                    $query = mysqli_query($conn, "select * from tb_mhs");
-                                    $result = mysqli_num_rows($query);
-                                    ?>
-                                    <h3><?php echo $result; ?></h3>
-
-                                    <p>Mahasiswa</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-solid fa-graduation-cap"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <!-- small box -->
-                            <div class="small-box bg-lightblue color-palette">
-                                <div class="inner">
-                                    <?php
-                                    include 'db_connection.php';
-                                    $query = mysqli_query($conn, "select * from tb_mhs");
-                                    $result = mysqli_num_rows($query);
-                                    ?>
-                                    <h3><?php echo $result; ?></h3>
-
-                                    <p>Petugas</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-solid fa-person-military-pointing"></i>
-                                </div>
-                            </div>
+                        <div class="col-sm-6 mb-3">
+                            <h1 class="m-0 text-dark">Edit Mahasiswa</h1>
                         </div>
                     </div>
                     <!-- /.row -->
-                </div><!-- /.container-fluid -->
+                </div>
+                <!-- /.container-fluid -->
             </div>
-            <!-- /.content -->
+
+            <div class="content">
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Edit Siswa</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form method="post" action="update_prodi.php" enctype="multipart/form-data">
+                                    <?php
+                                    include_once("db_connection.php");
+                                    $id = $_GET['id_prodi'];
+
+                                    $result = mysqli_query($conn, "select * from tb_prodi ");
+
+                                    while ($user_data = mysqli_fetch_array($result)) {
+                                        $prodi            = $user_data['prodi'];
+                                    }
+                                    ?>
+
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Nama Program Studi</label>
+                                            <input type="hidden" autocomplete="off" name="id_prodi" id="id_prodi" value="<?php echo $_GET['id_prodi']; ?>" class="form-control">
+                                            <input type="text" autocomplete="off" name="prodi" id="prodi" value="<?php echo "$prodi"; ?>" class="form-control">
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+
+                                    <div class="card-footer">
+                                        <button type="submit" name="update" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.content-wrapper -->
+        <style>
+            .modal {
+                position: absolute;
+                top: 10px;
+                right: 100px;
+                bottom: 0;
+                left: 50px;
+                z-index: 10040;
+                overflow: auto;
+                overflow-y: auto;
+            }
+        </style>
 
         <footer class="main-footer">
             <strong>Copyright &copy;
@@ -224,6 +211,7 @@
                 $time      = date('H:i'); ?>
                 2014 - <?php echo $Date ?>
         </footer>
+
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -241,6 +229,37 @@
     <script src="./assets/AdminLTE-3.2.0/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="./assets/AdminLTE-3.2.0/dist/js/adminlte.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/jszip/jszip.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script>
+        $(function() {
+            $("#example1").DataTable({
+                "responsive": true,
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+
 </body>
 
 </html>
