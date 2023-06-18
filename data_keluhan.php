@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+    <title>Dashboard Complaint</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -40,7 +40,7 @@
             <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="./assets/AdminLTE-3.2.0/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <span class="brand-text font-weight-light">Complaint</span>
             </a>
 
             <!-- Sidebar -->
@@ -59,7 +59,17 @@
                     ?>
 
                     <div class="info">
-                        <a href="#" class="d-block"><?php echo $_SESSION['username']; ?></a>
+                        <a href="#" class="d-block">
+
+                            <?php
+                            include 'db_connection.php';
+                            $result = mysqli_query($conn, "select * from tb_petugas where id_admin = {$_SESSION['id_admin']}");
+                            while ($user_data = mysqli_fetch_array($result)) {
+
+                            ?>
+                                <?php echo $user_data['nama_petugas']; ?>
+                            <?php } ?>
+                        </a>
                     </div>
                 </div>
 
@@ -146,11 +156,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 mb-3">
-                            <h1 class="m-0 text-dark">Data Mahasiswa</h1>
-                        </div>
-                        <div class="ml-auto">
-
-                            <a href="add-siswa" class="btn text-white mb-4 btn-effect-ripple btn-primary"><i class="fas fa-plus"></i> Tambak Siswa</a>
+                            <h1 class="m-0 text-dark">Data Keluhan</h1>
                         </div>
                     </div>
                     <!-- /.row -->
@@ -182,7 +188,7 @@
                                             include_once("db_connection.php");
 
                                             $result = mysqli_query($conn, "
-                                            select tm.nim,tm.nama_mahasiswa,tkm.keluhan ,tkm.saran,tkm.file  
+                                            select tkm.id_keluhan,tm.nim,tm.nama_mahasiswa,tkm.keluhan,tkm.saran,tkm.file  
                                             from tb_keluhan_mhs tkm 
                                             join tb_mhs tm on tm.nim = tkm.nim 
                                             ");
@@ -203,8 +209,11 @@
                                                     <td><?php echo $user_data['nama_mahasiswa']; ?></td>
                                                     <td><?php echo $user_data['keluhan']; ?></td>
                                                     <td><?php echo $user_data['saran']; ?></td>
-                                                    <td>
-                                                        <img width="500" height="300" src="file-upload/<?php echo $user_data['file']; ?>" class="rounded float-start" alt="...">
+                                                    <td class="text-center">
+                                                        <a href="<?php echo "delete_complaint.php?id_keluhan=$user_data[id_keluhan]" ?>" class="btn text-light btn-effect-ripple btn-danger"><i class="fa fa-trash-alt"></i></a>
+                                                        <button type="button" class="btn btn-warning text-white" data-toggle="modal" data-target="#show-complaint-<?php echo $user_data['id_keluhan'] ?>">
+                                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -221,6 +230,69 @@
                 </div>
             </div>
         </div>
+
+        <style>
+            .modal {
+                position: absolute;
+                top: 10px;
+                right: 150px;
+                bottom: 0;
+                left: 50px;
+                z-index: 10040;
+                overflow: auto;
+                overflow-y: auto;
+            }
+        </style>
+        <?php
+        include_once("db_connection.php");
+
+        $result = mysqli_query($conn, "
+        select tkm.id_keluhan,tm.nim,tm.nama_mahasiswa,tkm.keluhan,tkm.saran,tkm.file  
+        from tb_keluhan_mhs tkm 
+        join tb_mhs tm on tm.nim = tkm.nim 
+        ");
+        ?>
+        <?php
+        $no = 1;
+        while ($user_data = mysqli_fetch_array($result)) {
+
+        ?>
+            <div class="modal fade" id="show-complaint-<?php echo $user_data['id_keluhan'] ?>">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Bukti Keluhan</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="card-body">
+                                <label>Bukti Gambar</label>
+                                <img style="width: 20rem;" src="./file-upload/<?php echo $user_data['file']; ?>" class="card-img-top" alt="<?php echo $user_data['file']; ?>">
+                                <div class="form-group">
+                                    <label>Keluhan</label>
+                                    <p><?php echo $user_data['keluhan']; ?></p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Saran</label>
+                                    <p><?php echo $user_data['saran']; ?></p>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+        <?php } ?>
 
         <footer class="main-footer">
             <strong>Copyright &copy;

@@ -95,7 +95,7 @@
                 },
                 messages: {
                     'nim_check': {
-                        required: "Tolong masukkan nim anda!",
+                        required: 'Tolong masukkan nim anda!',
                         number: "Ketikkan dengan angka bukan huruf!"
                     },
                     'keluhan': {

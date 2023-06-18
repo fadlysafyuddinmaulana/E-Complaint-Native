@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+    <title>Dashboard Complaint</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -40,7 +40,7 @@
             <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="./assets/AdminLTE-3.2.0/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <span class="brand-text font-weight-light">Complaint</span>
             </a>
 
             <!-- Sidebar -->
@@ -59,7 +59,17 @@
                     ?>
 
                     <div class="info">
-                        <a href="#" class="d-block"><?php echo $_SESSION['username']; ?></a>
+                        <a href="#" class="d-block">
+
+                            <?php
+                            include 'db_connection.php';
+                            $result = mysqli_query($conn, "select * from tb_petugas where id_admin = {$_SESSION['id_admin']}");
+                            while ($user_data = mysqli_fetch_array($result)) {
+
+                            ?>
+                                <?php echo $user_data['nama_petugas']; ?>
+                            <?php } ?>
+                        </a>
                     </div>
                 </div>
 
@@ -157,7 +167,7 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                                <form method="post" action="update_mhs.php" enctype="multipart/form-data">
+                                <form id="edit-form" method="post" action="update_mhs.php" enctype="multipart/form-data">
                                     <?php
                                     include_once("db_connection.php");
                                     $id = $_GET['id_mhs'];
@@ -168,11 +178,11 @@
                                     join tb_prodi tp on tm.id_prodi = tp.id_prodi  ");
 
                                     while ($user_data = mysqli_fetch_array($result)) {
-                                        $prodi            = $user_data['prodi'];
-                                        $nama_mahasiswa = $user_data['nama_mahasiswa'];
-                                        $jk             = $user_data['jk'];
-                                        $id_prodi       = $user_data['id_prodi'];
-                                        $prodi          = $user_data['prodi'];
+                                        $id_mhs             = $user_data['id_mhs'];
+                                        $nim                = $user_data['nim'];
+                                        $nama_mahasiswa     = $user_data['nama_mahasiswa'];
+                                        $jk                 = $user_data['jk'];
+                                        $prodi              = $user_data['prodi'];
                                     }
                                     ?>
 
@@ -180,7 +190,7 @@
                                         <div class="form-group">
                                             <label>NIM</label>
                                             <input type="hidden" autocomplete="off" name="id_mhs" id="id_mhs" value="<?php echo $_GET['id_mhs']; ?>" class="form-control">
-                                            <input type="text" autocomplete="off" name="nim" id="nim" value="<?php echo "$prodi"; ?>" class="form-control">
+                                            <input type="text" autocomplete="off" name="nim" id="nim" value="<?php echo "$nim"; ?>" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>Nama Mahasiswa</label>
@@ -199,6 +209,22 @@
                                                 </option>
                                                 <option value="L">Laki Laki</option>
                                                 <option value="P">Perempuan</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Prodi</label>
+                                            <select class="form-control select2" name="prodi" id="prodi" style="width: 100%;" required>
+                                                <option class="d-none" value="<?php echo $id_prodi; ?>"><?php echo $prodi; ?>
+                                                    <?php
+                                                    include_once("db_connection.php");
+
+                                                    $result = mysqli_query($conn, "select * from tb_prodi");
+                                                    ?>
+                                                    <?php while ($user_data = mysqli_fetch_array($result)) {
+
+                                                    ?>
+                                                <option value="<?php echo $user_data['id_prodi'] ?>"><?php echo $user_data['prodi'] ?></option>
+                                            <?php } ?>
                                             </select>
                                         </div>
                                     </div>
@@ -267,6 +293,56 @@
     <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- jquery-validation -->
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/additional-methods.min.js"></script>
+
+
+    <script>
+        $(function() {
+            $('#edit-form').validate({
+                rules: {
+                    'nim': {
+                        required: true,
+                    },
+                    'nama_mahasiswa': {
+                        required: true,
+                    },
+                    'jk': {
+                        required: true,
+                    },
+                    'prodi': {
+                        required: true,
+                    },
+                },
+                messages: {
+                    'nim': {
+                        required: 'Tolong masukkan NIM!'
+                    },
+                    'nama_mahasiswa': {
+                        required: "Tolong masukkan nama mahasiswa!"
+                    },
+                    'jk': {
+                        required: "Tolong pilih jenis kelamin!"
+                    },
+                    'prodi': {
+                        required: "Tolong pilih program studi!"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
 
     <script>
         $(function() {

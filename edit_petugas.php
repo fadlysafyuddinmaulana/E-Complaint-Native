@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+    <title>Dashboard Complaint</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -40,7 +40,7 @@
             <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="./assets/AdminLTE-3.2.0/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <span class="brand-text font-weight-light">Complaint</span>
             </a>
 
             <!-- Sidebar -->
@@ -59,7 +59,17 @@
                     ?>
 
                     <div class="info">
-                        <a href="#" class="d-block"><?php echo $_SESSION['username']; ?></a>
+                        <a href="#" class="d-block">
+
+                            <?php
+                            include 'db_connection.php';
+                            $result = mysqli_query($conn, "select * from tb_petugas where id_admin = {$_SESSION['id_admin']}");
+                            while ($user_data = mysqli_fetch_array($result)) {
+
+                            ?>
+                                <?php echo $user_data['nama_petugas']; ?>
+                            <?php } ?>
+                        </a>
                     </div>
                 </div>
 
@@ -120,6 +130,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="conf_password.php" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-lock"></i>
+                                <p>
+                                    Edit Password
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -157,7 +175,7 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                                <form method="post" action="update_petugas.php" enctype="multipart/form-data">
+                                <form id="edit-form" method="post" action="update_petugas.php" enctype="multipart/form-data">
                                     <?php
                                     include_once("db_connection.php");
                                     $id = $_GET['id_admin'];
@@ -254,33 +272,47 @@
     <script src="./assets/AdminLTE-3.2.0/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="./assets/AdminLTE-3.2.0/dist/js/adminlte.min.js"></script>
-    <!-- DataTables  & Plugins -->
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/jszip/jszip.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- jquery-validation -->
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/additional-methods.min.js"></script>
+
 
     <script>
         $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
+            $('#edit-form').validate({
+                rules: {
+                    'nama_petugas': {
+                        required: true,
+                    },
+                    'username': {
+                        required: true,
+                    },
+                    'password': {
+                        required: true,
+                    },
+                },
+                messages: {
+                    'nama_petugas': {
+                        required: 'Tolong masukkan nama petugas!'
+                    },
+                    'username': {
+                        required: "Tolong masukkan username!"
+                    },
+                    'password': {
+                        required: "Tolong masukkan password!"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
             });
         });
     </script>

@@ -28,7 +28,7 @@ if ($result->num_rows > 0) {
                 header("Location: index.php");
             }
         } else {
-            $new_file   = 'Bukti Keluhan Oleh ' . $nim . '-' . $Date . '-' . $Time . '-' . $bk_file;
+            $new_file   = 'folder.png';
             $result_record = mysqli_query($conn, "insert into tb_keluhan_mhs(nim,keluhan,saran,file) values('$nim','$keluhan','$saran','$new_file')");
             header("Location: index.php");
         }

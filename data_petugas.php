@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+    <title>Dashboard Complaint</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -40,7 +40,7 @@
             <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="./assets/AdminLTE-3.2.0/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <span class="brand-text font-weight-light">Complaint</span>
             </a>
 
             <!-- Sidebar -->
@@ -59,7 +59,17 @@
                     ?>
 
                     <div class="info">
-                        <a href="#" class="d-block"><?php echo $_SESSION['username']; ?></a>
+                        <a href="#" class="d-block">
+
+                            <?php
+                            include 'db_connection.php';
+                            $result = mysqli_query($conn, "select * from tb_petugas where id_admin = {$_SESSION['id_admin']}");
+                            while ($user_data = mysqli_fetch_array($result)) {
+
+                            ?>
+                                <?php echo $user_data['nama_petugas']; ?>
+                            <?php } ?>
+                        </a>
                     </div>
                 </div>
 
@@ -147,7 +157,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 mb-3">
-                            <h1 class="m-0 text-dark">Data Mahasiswa</h1>
+                            <h1 class="m-0 text-dark">Data Petugas</h1>
                         </div>
                         <div class="ml-auto">
                             <button type="button" class="btn text-white mb-4 btn-effect-ripple btn-primary" data-toggle="modal" data-target="#modal-default">
@@ -230,7 +240,7 @@
 
 
         <div class="modal fade" id="modal-default">
-            <form method="post" action="insert_petugas.php" enctype="multipart/form-data">
+            <form id="add-form" method="post" action="insert_petugas.php" enctype="multipart/form-data">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -258,7 +268,7 @@
                                     <select class="form-control" name="role" id="role" style="width: 100%;">
                                         <option class="d-none"></option>
                                         <option value="1">Admin</option>
-                                        <option value="2" selected>Petugas</option>
+                                        <option value="2">Petugas</option>
                                     </select>
                                 </div>
                             </div>
@@ -326,6 +336,56 @@
     <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="./assets/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- jquery-validation -->
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/additional-methods.min.js"></script>
+
+
+    <script>
+        $(function() {
+            $('#add-form').validate({
+                rules: {
+                    'nama_petugas': {
+                        required: true,
+                    },
+                    'username': {
+                        required: true,
+                    },
+                    'password': {
+                        required: true,
+                    },
+                    'role': {
+                        required: true,
+                    },
+                },
+                messages: {
+                    'nama_petugas': {
+                        required: 'Tolong masukkan nama petugas!'
+                    },
+                    'username': {
+                        required: "Tolong masukkan username!"
+                    },
+                    'password': {
+                        required: "Tolong masukkan password!"
+                    },
+                    'role': {
+                        required: "Tolong pilih role!"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
 
     <script>
         $(function() {

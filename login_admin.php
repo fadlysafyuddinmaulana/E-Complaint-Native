@@ -28,9 +28,9 @@
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="auth.php" method="post">
+                <form id="login-admin" action="auth.php" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="username" placeholder="Username" required>
+                        <input type="text" class="form-control" name="username" placeholder="Username">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -66,6 +66,62 @@
     <script src="./assets/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="./assets/AdminLTE-3.2.0/dist/js/adminlte.min.js"></script>
+    <!-- jquery-validation -->
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="./assets/AdminLTE-3.2.0/plugins/jquery-validation/additional-methods.min.js"></script>
+    <!-- custom-script -->
+
+    <script>
+        $(function() {
+            $('#login-admin').validate({
+                rules: {
+                    'username': {
+                        required: true,
+                    },
+                    'password': {
+                        required: true,
+                    }
+                },
+                messages: {
+                    'username': {
+                        required: "<span class='form-error-icon badge badge-danger text-uppercase'>Error</span> Tolong masukkan username anda!"
+                    },
+                    'password': {
+                        required: "<span class='form-error-icon badge badge-danger text-uppercase'>Error</span> Tolong masukkan password anda!"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    let customError = $([
+                        '<label class="invalid-feedback mt-0 mb-2 d-block">',
+                        '  <span class="error-box mb-0 d-block">',
+                        '  </span>',
+                        '</label>'
+                    ].join(""));
+
+                    // Add `form-error-message` class to the error element
+                    error.addClass("form-error-message");
+
+                    // Insert it inside the span that has `mb-0` class
+                    error.appendTo(customError.find('.error-box'));
+
+                    // Insert your custom error
+                    customError.insertBefore(element);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form) {
+                    if (form.isValid()) {
+                        form.submit();
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Fixed Sidebar</title>
+    <title>Dashboard Complaint</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -36,7 +36,7 @@
             <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="./assets/AdminLTE-3.2.0/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <span class="brand-text font-weight-light">Complaint</span>
             </a>
 
             <!-- Sidebar -->
@@ -55,7 +55,17 @@
                     ?>
 
                     <div class="info">
-                        <a href="#" class="d-block"><?php echo $_SESSION['username']; ?></a>
+                        <a href="#" class="d-block">
+
+                            <?php
+                            include 'db_connection.php';
+                            $result = mysqli_query($conn, "select * from tb_petugas where id_admin = {$_SESSION['id_admin']}");
+                            while ($user_data = mysqli_fetch_array($result)) {
+
+                            ?>
+                                <?php echo $user_data['nama_petugas']; ?>
+                            <?php } ?>
+                        </a>
                     </div>
                 </div>
 
