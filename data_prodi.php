@@ -115,7 +115,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="data_prodi.php" class="nav-link active">
-                                <i class="nav-icon fas fa-graduation-cap"></i>
+                                <i class="nav-icon fas fa-solid fa-building-columns"></i>
                                 <p>
                                     Data Prodi
                                 </p>

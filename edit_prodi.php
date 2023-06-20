@@ -130,6 +130,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="conf_password.php" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-lock"></i>
+                                <p>
+                                    Edit Password
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

@@ -1,0 +1,10 @@
+1.buka xampp terus star apache dan mysql
+2.ketik localhost ke directory folder "uas-pemweblan" itu akan otomatis menuju ke halaman utama
+3.di halaman utama itu adalah laman utama,disitu menampilkan laman keluhan untuk memasukkan keluhan yang mereka miliki mungkin seperti contoh 
+ketik nim 2103040130 dan ketik saran dan keluhan sama jika ada file silahkan di masukkan
+4.jika pingin masuk ke laman admin ketik "uas-pemweblan/login_admin.php"
+5.masukkan akun admin untuk username"admin" dan password"12345", setelah itu di klik atau enter.
+6.di role akun admin sendiri bisa mengakses beberapa laman terdiri keluhan, petugas, mahasiswa, dan prodi
+7.tetapi di role petugas bisa mengakses beberapa laman tapi gak bisa akses petugas
+8.jika sudah berhasil masuk role admin bisa mengelola mahasiswa,prodi,petugas,keluhan,sedangkan petugas sama kek admin
+tapi gak bisa akses petugas

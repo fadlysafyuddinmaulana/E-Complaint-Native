@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="./css-custom/cp.css">
 </head>
 
-<body  class="hold-transition login-page">
+<body class="hold-transition login-page">
     <div class="register-box" style="width: 400px; margin: 45px;">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
@@ -30,7 +30,7 @@
                 <form id="complaint-form" action="Insert_complaint.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <!-- <label>NIM</label> -->
-                        <input type="text" class="form-control" id="exampleInputEmail1" name="nim_check" maxlength="10" placeholder="Masukkan NIM anda">
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="nim_check" maxlength="10" placeholder="Masukkan NIM anda" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <!-- <label>Keluhan Anda</label> -->

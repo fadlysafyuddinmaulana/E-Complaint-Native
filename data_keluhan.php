@@ -115,7 +115,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="data_prodi.php" class="nav-link">
-                                <i class="nav-icon fas fa-graduation-cap"></i>
+                                <i class="nav-icon fas fa-solid fa-building-columns"></i>
                                 <p>
                                     Data Prodi
                                 </p>
@@ -283,8 +283,7 @@
                             <!-- /.card-body -->
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-default ml-auto" data-dismiss="modal">Save changes</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->

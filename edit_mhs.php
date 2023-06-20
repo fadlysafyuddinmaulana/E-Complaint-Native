@@ -115,7 +115,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="data_prodi.php" class="nav-link">
-                                <i class="nav-icon fas fa-graduation-cap"></i>
+                                <i class="nav-icon fas fa-solid fa-building-columns"></i>
                                 <p>
                                     Data Prodi
                                 </p>
@@ -127,6 +127,14 @@
                                 <i class="nav-icon fas fa-solid fa-gear"></i>
                                 <p>
                                     Pengaturan User
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="conf_password.php" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-lock"></i>
+                                <p>
+                                    Edit Password
                                 </p>
                             </a>
                         </li>
